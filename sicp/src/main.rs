@@ -15,8 +15,7 @@ fn main() {
     f_recurse(30);
     println!("Recurse took {:.2?}", before.elapsed());
     println!("########### Exercise pascal");
-    println!("{:?}", next_line(vec![0, 1, 1, 0]));
-    println!("{:?}", next_line(next_line(vec![0, 1, 1, 0])));
+    pascal_recursive(10);
 }
 
 fn ackerman(x: i32, y: i32) -> i32 {
@@ -58,16 +57,39 @@ fn f_recurse(n: u64) -> u64 {
     }
 }
 
-fn next_line(line: Vec<i32>) -> Vec<i32> {
-    let mut next_line: Vec<i32> = vec![0];
-    let mut counter:i32 = 0;
-    loop {
-        counter +=1;
-        next_line.push(line[counter as usize] + line[(counter-1) as usize]);
-        if counter == line.len() as i32 - 1{
-            next_line.push(0);
-            break next_line
+fn pascal_recursive(row_index: u64) {
+    let mut counter = 0;
+    println!("{:?}", vec![1]);
+    while counter <= row_index {
+        counter += 1;
+        println!("{:?}", find_pascal_line(counter))
+    }
+
+    fn find_pascal_line(row_index: u64) -> Vec<u64> {
+        fn next_line(line: Vec<u64>) -> Vec<u64> {
+            let mut next_line: Vec<u64> = vec![0];
+            let mut counter:u64 = 0;
+            loop {
+                counter +=1;
+                next_line.push(line[counter as usize] + line[(counter-1) as usize]);
+                if counter == line.len() as u64 - 1{
+                    next_line.push(0);
+                    break next_line
+                }
+            }
+        }
+
+        let mut counter:u64 = 0;
+        let mut current_line = vec![0,1,0];
+        loop {
+            counter += 1;
+            if counter == row_index {
+                let mut pascal_line = next_line(current_line);
+                pascal_line.remove(0);
+                pascal_line.remove(pascal_line.len() - 1);
+                break pascal_line
+            }
+            current_line = next_line(current_line)
         }
     }
 }
-
