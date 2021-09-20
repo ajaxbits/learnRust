@@ -1,4 +1,5 @@
 use std::time::Instant;
+use std::vec::Vec;
 
 fn main() {
     println!("{}", ackerman(1, 10));
@@ -13,6 +14,9 @@ fn main() {
     before = Instant::now();
     f_recurse(30);
     println!("Recurse took {:.2?}", before.elapsed());
+    println!("########### Exercise pascal");
+    println!("{:?}", next_line(vec![0, 1, 1, 0]));
+    println!("{:?}", next_line(next_line(vec![0, 1, 1, 0])));
 }
 
 fn ackerman(x: i32, y: i32) -> i32 {
@@ -53,3 +57,17 @@ fn f_recurse(n: u64) -> u64 {
         f_recurse(n - 1) + (2 * f_recurse(n - 2)) + (3 * f_recurse(n - 3))
     }
 }
+
+fn next_line(line: Vec<i32>) -> Vec<i32> {
+    let mut next_line: Vec<i32> = vec![0];
+    let mut counter:i32 = 0;
+    loop {
+        counter +=1;
+        next_line.push(line[counter as usize] + line[(counter-1) as usize]);
+        if counter == line.len() as i32 - 1{
+            next_line.push(0);
+            break next_line
+        }
+    }
+}
+
